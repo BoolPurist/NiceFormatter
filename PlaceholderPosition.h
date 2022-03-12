@@ -9,10 +9,10 @@
 
 struct PlaceholderPosition
 {
-  int index{};
+  size_t index{};
   std::vector<size_t> positions;
 
-  PlaceholderPosition(int index,const std::vector<size_t>& toTake);
+  PlaceholderPosition(size_t index, const std::vector<size_t>& toTake);
   static bool Compare(const PlaceholderPosition &left, const PlaceholderPosition &right);
 };
 

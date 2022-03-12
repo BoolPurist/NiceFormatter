@@ -35,7 +35,7 @@ namespace NiceGraphic
   template<typename... ArgsHaveOutStreamOperator>
   std::string Format(
       const std::string &format,
-      ArgsHaveOutStreamOperator... variadicArgs
+      const ArgsHaveOutStreamOperator&... variadicArgs
     )
   {
     using namespace Internal::Format;

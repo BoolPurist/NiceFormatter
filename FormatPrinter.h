@@ -5,10 +5,8 @@
 #ifndef NICEFORMATPRINT_FORMATPRINTER_H_
 #define NICEFORMATPRINT_FORMATPRINTER_H_
 
-#include <ostream>
 #include <sstream>
 #include <vector>
-#include <iostream>
 #include "Token.h"
 #include "PlaceholderPosition.h"
 

@@ -4,7 +4,7 @@
 
 #include "PlaceholderPosition.h"
 
-PlaceholderPosition::PlaceholderPosition(int index,const std::vector<size_t>& toTake)
+PlaceholderPosition::PlaceholderPosition(size_t index, const std::vector<size_t>& toTake)
   : index{index}, positions{toTake} {}
 
 bool PlaceholderPosition::Compare(const PlaceholderPosition &left, const PlaceholderPosition &right)

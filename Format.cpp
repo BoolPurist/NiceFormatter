@@ -4,7 +4,7 @@
 namespace NiceGraphic::Internal::Format
 {
 
-  using LocationPlaceholders = std::map<int, std::vector<size_t>>;
+  using LocationPlaceholders = std::map<size_t , std::vector<size_t>>;
   using PlacholdersSeq = std::vector<PlaceholderPosition>;
 
   LocationPlaceholders LocatePlaceHolders(const std::vector<Token> &where);
