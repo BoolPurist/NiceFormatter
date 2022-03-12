@@ -26,7 +26,6 @@ namespace NiceGraphic
     template<typename HasOutStreamOperator>
     void InsertFormatVars(const HasOutStreamOperator& lastToPrint)
     {
-      ThrowIfNotEqualArgsNumber();
       InsertArgIntoFormat(lastToPrint);
     }
 
@@ -36,7 +35,6 @@ namespace NiceGraphic
         const ArgsHaveOutStreamOperator&... restToWrite
       )
     {
-      ThrowIfTooManyArgs();
       InsertArgIntoFormat(toWrite);
       InsertFormatVars(restToWrite...);
     }
@@ -47,10 +45,7 @@ namespace NiceGraphic
     std::vector<Token> formatTemplate;
     std::vector<PlaceholderPosition> positionsToInsert;
     std::ostringstream placeholderBuffer{};
-    int printIndex{-1};
-
-    void ThrowIfTooManyArgs();
-    void ThrowIfNotEqualArgsNumber();
+    int printIndex{};
 
     template <typename HasOutStreamOperator>
     void InsertArgIntoFormat(const HasOutStreamOperator &toWrite)
@@ -64,6 +59,8 @@ namespace NiceGraphic
 
       placeholderBuffer.str("");
       placeholderBuffer.clear();
+
+      printIndex++;
     }
 
   };

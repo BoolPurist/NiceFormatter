@@ -165,6 +165,18 @@ namespace NiceGraphic::Internal::Format
     return  sortedPlaceSeq;
   }
 
+  void ThrowIfWrongArgNumber(int argNumber, int placeHolderNumber)
+  {
+    if (argNumber != placeHolderNumber)
+    {
+      std::ostringstream errorMsg;
+      errorMsg << "Number of given variadic arguments are not correct.\n"
+               << "Number of variadic arguments: (" << argNumber << ").\n"
+               << "Format expects (" << placeHolderNumber << ") arguments. \n";
+      throw std::runtime_error(errorMsg.str());
+    }
+  }
+
   LocationPlaceholders LocatePlaceHolders(const std::vector<Token> &where)
   {
     LocationPlaceholders foundPlaceHolders{};

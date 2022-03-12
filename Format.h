@@ -20,6 +20,7 @@ namespace NiceGraphic::Internal::Format
     const std::vector<Token> &toInspect
   );
 
+  void ThrowIfWrongArgNumber(int argNumber, int placeHolderNumber);
 }
 
 namespace NiceGraphic
@@ -32,14 +33,31 @@ namespace NiceGraphic
   /// Example: Format("({0},{1})", 2, 4) => (2,4)
   /// Precondition variadic arguments have a output stream operator operator.
   template<typename... ArgsHaveOutStreamOperator>
-  std::string Format(const std::string &format, ArgsHaveOutStreamOperator... variadicArgs)
+  std::string Format(
+      const std::string &format,
+      ArgsHaveOutStreamOperator... variadicArgs
+    )
   {
     using namespace Internal::Format;
 
-    auto tokens = FormatTokenizer(format);
-    std::vector<PlaceholderPosition> position = GetPlaceHolderLocation(tokens);
 
-    FormatPrinter printer{std::move(tokens), std::move(position)};
+    auto tokens = FormatTokenizer(format);
+    std::vector<PlaceholderPosition> position = GetPlaceHolderLocation(
+        tokens
+      );
+
+    const auto numberOfFoundPlaceholders = position.size();
+    const auto numberOfArgs = sizeof...(variadicArgs);
+
+    ThrowIfWrongArgNumber(
+        numberOfArgs,
+        numberOfFoundPlaceholders
+      );
+
+    FormatPrinter printer{
+      std::move(tokens),
+      std::move(position)
+    };
 
     printer.InsertFormatVars(variadicArgs...);
     return printer.GetMergeBetweenFormatAndVars().str();
