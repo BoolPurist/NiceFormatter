@@ -48,11 +48,13 @@ namespace NiceGraphic
     template <typename HasOutStreamOperator>
     void InsertArgIntoFormat(const HasOutStreamOperator &toWrite)
     {
-      const auto &toFill = positionsToInsert[printIndex];
+      const auto& placesToFill = positionsToInsert.at(printIndex);
       placeholderBuffer << toWrite;
-      for (const auto insertIndex : toFill.positions)
+      const auto& valueToInsert = placeholderBuffer.str();
+
+      for (const auto& i_fill : placesToFill.positions)
       {
-        formatTemplate.at(insertIndex).value = placeholderBuffer.str();
+        formatTemplate.at(i_fill).value = valueToInsert;
       }
 
       placeholderBuffer.str("");

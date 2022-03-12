@@ -1,12 +1,8 @@
 //
 // Created by nicegraphic on 3/11/22.
 //
-
-
-
 #include "../Format.h"
 #include <iostream>
-
 
 int main()
 {
@@ -15,5 +11,4 @@ int main()
 
   const std::string output = NiceGraphic::Format("({0},{1})", x, y);
   std::cout << output << std::endl;
-
 }
