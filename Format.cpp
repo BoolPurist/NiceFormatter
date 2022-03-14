@@ -81,7 +81,7 @@ namespace NiceGraphic::Internal::Format
       i_symbol_literal++
       )
     {
-      auto currentSymbol = symbolSequence.at(i_symbol_literal);
+      const auto& currentSymbol = symbolSequence.at(i_symbol_literal);
 
       if (currentSymbol == kOpenPlaceHolderSymbol)
       {

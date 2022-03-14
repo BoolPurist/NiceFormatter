@@ -12,20 +12,8 @@
 #include "PlaceholderPosition.h"
 #include "FormatPrinter.h"
 
-namespace NiceGraphic::Internal::Format
-{
-  std::vector<Token> FormatTokenizer(const std::string& formatToTokenize);
-
-  std::vector<PlaceholderPosition> GetPlaceHolderLocation(
-    const std::vector<Token> &toInspect
-  );
-
-  void ThrowIfWrongArgNumber(int argNumber, int placeHolderNumber);
-}
-
 namespace NiceGraphic
 {
-
   /// Summary: Allows to insert variadic arguments into format string
   /// Param format: Is the template to be merged with variadic arguments.
   /// Params variadicArgs: Variables to be inserted in format.
@@ -34,35 +22,23 @@ namespace NiceGraphic
   /// Precondition variadic arguments have a output stream operator operator.
   template<typename... ArgsHaveOutStreamOperator>
   std::string Format(
-      const std::string &format,
-      const ArgsHaveOutStreamOperator&... variadicArgs
-    )
-  {
-    using namespace Internal::Format;
-
-
-    auto tokens = FormatTokenizer(format);
-    std::vector<PlaceholderPosition> position = GetPlaceHolderLocation(
-        tokens
-      );
-
-    const auto numberOfFoundPlaceholders = position.size();
-    const auto numberOfArgs = sizeof...(variadicArgs);
-
-    ThrowIfWrongArgNumber(
-        numberOfArgs,
-        numberOfFoundPlaceholders
-      );
-
-    FormatPrinter printer{
-      std::move(tokens),
-      std::move(position)
-    };
-
-    printer.InsertFormatVars(variadicArgs...);
-    return printer.GetMergeBetweenFormatAndVars().str();
-  }
+    const std::string &format,
+    const ArgsHaveOutStreamOperator&... variadicArgs
+  );
 
 }
+
+namespace NiceGraphic::Internal::Format
+{
+std::vector<Token> FormatTokenizer(const std::string& formatToTokenize);
+
+std::vector<PlaceholderPosition> GetPlaceHolderLocation(
+  const std::vector<Token> &toInspect
+);
+
+void ThrowIfWrongArgNumber(int argNumber, int placeHolderNumber);
+}
+
+#include "Format.tpp"
 
 #endif //NICEFORMATPRINT_LIBRARY_H

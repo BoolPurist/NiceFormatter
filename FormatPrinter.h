@@ -22,20 +22,13 @@ namespace NiceGraphic
       );
 
     template<typename HasOutStreamOperator>
-    void InsertFormatVars(const HasOutStreamOperator& lastToPrint)
-    {
-      InsertArgIntoFormat(lastToPrint);
-    }
+    void InsertFormatVars(const HasOutStreamOperator& lastToPrint);
 
     template<typename HasOutStreamOperator,typename... ArgsHaveOutStreamOperator>
     void InsertFormatVars(
         const HasOutStreamOperator &toWrite,
         const ArgsHaveOutStreamOperator&... restToWrite
-      )
-    {
-      InsertArgIntoFormat(toWrite);
-      InsertFormatVars(restToWrite...);
-    }
+      );
 
     std::ostringstream GetMergeBetweenFormatAndVars();
 
@@ -46,24 +39,11 @@ namespace NiceGraphic
     int printIndex{};
 
     template <typename HasOutStreamOperator>
-    void InsertArgIntoFormat(const HasOutStreamOperator &toWrite)
-    {
-      const auto& placesToFill = positionsToInsert.at(printIndex);
-      placeholderBuffer << toWrite;
-      const auto& valueToInsert = placeholderBuffer.str();
-
-      for (const auto& i_fill : placesToFill.positions)
-      {
-        formatTemplate.at(i_fill).value = valueToInsert;
-      }
-
-      placeholderBuffer.str("");
-      placeholderBuffer.clear();
-
-      printIndex++;
-    }
+    void InsertArgIntoFormat(const HasOutStreamOperator &toWrite);
 
   };
 
 }
+
+#include "FormatPrinter.tpp"
 #endif //NICEFORMATPRINT_FORMATPRINTER_H_

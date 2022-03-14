@@ -4,7 +4,15 @@
 #include "../Format.h"
 #include <iostream>
 
+void AssertShortSimple();
+
 int main()
+{
+
+  AssertShortSimple();
+}
+
+void AssertShortSimple()
 {
   const int x{5};
   const int y{20};
