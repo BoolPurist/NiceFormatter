@@ -3,9 +3,13 @@
 //
 
 #include <catch2/catch.hpp>
+#include "../Format.h"
 
-
-TEST_CASE( "Factorials are computed", "[factorial]" )
+TEST_CASE( "Test case with 2 placeholders", "[Valid]" )
 {
-  REQUIRE(1 == 1);
+  const int x{ 5 };
+  const int y{ 20 };
+
+  const std::string output = NiceGraphic::Format("({0},{1})", x, y);
+  REQUIRE(output == "(5,20)");
 }
