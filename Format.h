@@ -11,7 +11,7 @@
 #include "Token.h"
 #include "PlaceholderPosition.h"
 #include "FormatPrinter.h"
-#include "Invalid_format.h"
+#include "InvalidFormat.h"
 
 namespace NiceGraphic
 {

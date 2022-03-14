@@ -10,11 +10,11 @@
 
 namespace NiceGraphic
 {
-  class Invalid_format : public std::exception
+  class InvalidFormat : public std::exception
   {
    public:
-    Invalid_format(const std::string &givenErrorMsg);
-    virtual ~Invalid_format();
+    InvalidFormat(const std::string &givenErrorMsg);
+    virtual ~InvalidFormat();
     virtual const char* what() const throw();
    private:
     const std::string errorMsg;

@@ -12,14 +12,14 @@ set(SOURCE_FILES
         Format.cpp
         PlaceholderPosition.cpp
         FormatPrinter.cpp
-        Invalid_format.cpp
+        InvalidFormat.cpp
 )
 set(HEADER_FILES
         Format.h
         PlaceholderPosition.h
         FormatPrinter.h
         Token.h
-        Invalid_format.h
+        InvalidFormat.h
 )
 set(TEMPLATE_FILES
         Format.tpp

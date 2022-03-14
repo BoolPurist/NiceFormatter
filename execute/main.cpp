@@ -3,34 +3,42 @@
 //
 #include "../Format.h"
 #include <iostream>
+#include <string>
 
+void PrintLine(const std::string& message);
 void AssertShortSimple();
 void AssertThrowInvalidExpForWrongNbrOfPlaceHolders();
+void AssertThrowInvalidExpForWrongFormat();
 
 int main()
 {
+
   AssertShortSimple();
   AssertThrowInvalidExpForWrongNbrOfPlaceHolders();
+  AssertThrowInvalidExpForWrongFormat();
+}
+
+void PrintLine(const std::string& message)
+{
+  std::cout << message << std::endl;
 }
 
 void AssertShortSimple()
 {
-  std::cout << "Asserting case normal case with okay args."
-            << std::endl;
+  PrintLine("Asserting case normal with okay args.");
 
   const int x{5};
   const int y{20};
 
   const std::string output = NiceGraphic::Format("({0},{1})", x, y);
-  std::cout << output << std::endl;
+  PrintLine(output);
 }
 
 void AssertThrowInvalidExpForWrongNbrOfPlaceHolders()
 {
   using namespace std::literals;
 
-  std::cout << "Asserting case with wrong number of placeholder args."
-            << std::endl;
+  PrintLine("Asserting case with wrong number of placeholder args.");
 
   const std::string format = "{0} <==> {1}"s;
 
@@ -40,9 +48,9 @@ void AssertThrowInvalidExpForWrongNbrOfPlaceHolders()
     NiceGraphic::Format(format, 1);
     assert(false);
   }
-  catch(const NiceGraphic::Invalid_format& error)
+  catch(const NiceGraphic::InvalidFormat& error)
   {
-    std::cout << error.what() << std::endl;
+    PrintLine(error.what() );
   }
 
   // Call with too many arguments
@@ -51,8 +59,63 @@ void AssertThrowInvalidExpForWrongNbrOfPlaceHolders()
     NiceGraphic::Format(format, 1, 2, 3);
     assert(false);
   }
-  catch(const NiceGraphic::Invalid_format& error)
+  catch(const NiceGraphic::InvalidFormat& error)
   {
-    std::cout << error.what() << std::endl;
+    PrintLine(error.what());
   }
+}
+
+void AssertThrowInvalidExpForWrongFormat()
+{
+  PrintLine("Asserting cases with wrong format");
+
+  std::string currentWrongFormat{"aaa{a}aaa"};
+
+  try
+  {
+    NiceGraphic::Format("aaa{a}aaa", 1);
+    assert(false);
+  }
+  catch (const NiceGraphic::InvalidFormat& error)
+  {
+    PrintLine(error.what());
+  }
+  catch(...)
+  {
+    assert(false);
+  }
+
+  try
+  {
+    NiceGraphic::Format("aaa{0}a{2}aa", 1);
+    assert(false);
+  }
+  catch (const NiceGraphic::InvalidFormat& error)
+  {
+    PrintLine(error.what());
+  }
+  catch(const std::exception& error)
+  {
+    PrintLine(error.what());
+    assert(false);
+  }
+
+  try
+  {
+    NiceGraphic::Format("aaa{234", 1);
+    assert(false);
+  }
+  catch (const NiceGraphic::InvalidFormat& error)
+  {
+    PrintLine(error.what());
+  }
+  catch(const std::exception& error)
+  {
+    PrintLine(error.what());
+    assert(false);
+  }
+
+
+
+
 }

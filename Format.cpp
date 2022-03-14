@@ -3,6 +3,7 @@
 
 namespace NiceGraphic::Internal::Format
 {
+  using namespace std::literals;
 
   using LocationPlaceholders = std::map<size_t , std::vector<size_t>>;
   using PlacholdersSeq = std::vector<PlaceholderPosition>;
@@ -131,12 +132,18 @@ namespace NiceGraphic::Internal::Format
       }
       else
       {
-        throw std::runtime_error("non digit based placeholder id.");
+        std::string errorMessage{
+          "("s + currentSymbol + ") is not digit for a placeholder argument"s
+        };
+        throw InvalidFormat(errorMessage);
       }
     }
 
     // Should not reach end of format with no found closing '}'
-    throw std::runtime_error("No closing symbol.");
+
+    throw InvalidFormat(
+      "No closing "s + kClosePlaceHolderSymbol + " found."s
+      );
   }
 
   std::vector<PlaceholderPosition> GetPlaceHolderLocation(
@@ -158,7 +165,13 @@ namespace NiceGraphic::Internal::Format
     {
       if (sortedPlaceSeq.at(i_supposedNumber).index != i_supposedNumber)
       {
-        throw std::runtime_error("Placeholder ids are not ascending without gaps");
+
+        const std::string errorMessage{
+          "Placeholder id ("s + std::to_string(i_supposedNumber) +
+          ") is missing."s
+        };
+
+        throw InvalidFormat(errorMessage);
       }
     }
 
@@ -173,7 +186,7 @@ namespace NiceGraphic::Internal::Format
       errorMsg << "Number of given variadic arguments are not correct.\n"
                << "Number of variadic arguments: (" << argNumber << ").\n"
                << "Format expects (" << placeHolderNumber << ") arguments. \n";
-      throw Invalid_format(errorMsg.str());
+      throw InvalidFormat(errorMsg.str());
     }
   }
 
