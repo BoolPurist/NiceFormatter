@@ -12,7 +12,6 @@ void AssertThrowInvalidExpForWrongFormat();
 
 int main()
 {
-
   AssertShortSimple();
   AssertThrowInvalidExpForWrongNbrOfPlaceHolders();
   AssertThrowInvalidExpForWrongFormat();
@@ -114,8 +113,4 @@ void AssertThrowInvalidExpForWrongFormat()
     PrintLine(error.what());
     assert(false);
   }
-
-
-
-
 }

@@ -1,0 +1,5 @@
+include(FetchCatchFromGit)
+
+add_executable(unit_tests test-main.cpp test-format-number.cpp)
+
+target_link_libraries(unit_tests PRIVATE Catch2::Catch2)

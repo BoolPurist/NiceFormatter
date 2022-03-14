@@ -5,11 +5,11 @@ namespace NiceGraphic::Internal::Format
 {
   using namespace std::literals;
 
-  using LocationPlaceholders = std::map<size_t , std::vector<size_t>>;
-  using PlacholdersSeq = std::vector<PlaceholderPosition>;
+  using LocationPlaceholders_t = std::map<size_t , std::vector<size_t>>;
+  using PlacholdersSeq_t = std::vector<PlaceholderPosition>;
 
-  LocationPlaceholders LocatePlaceHolders(const std::vector<Token> &where);
-  PlacholdersSeq TurnIntoSortedSeq(LocationPlaceholders &toTurn);
+  LocationPlaceholders_t LocatePlaceHolders(const std::vector<Token> &where);
+  PlacholdersSeq_t TurnIntoSortedSeq(LocationPlaceholders_t &toTurn);
   Token ProcessNextLiteral(
     size_t &currentPosition,
     const std::string &symbolSequence
@@ -20,8 +20,8 @@ namespace NiceGraphic::Internal::Format
     const std::string &symbolSequence
   );
 
-  const char kOpenPlaceHolderSymbol = '{';
-  const char kClosePlaceHolderSymbol = '}';
+  static const char kOpenPlaceHolderSymbol = '{';
+	static const char kClosePlaceHolderSymbol = '}';
 
   std::vector<Token> FormatTokenizer(const std::string& formatToTokenize)
   {
@@ -190,9 +190,9 @@ namespace NiceGraphic::Internal::Format
     }
   }
 
-  LocationPlaceholders LocatePlaceHolders(const std::vector<Token> &where)
+  LocationPlaceholders_t LocatePlaceHolders(const std::vector<Token> &where)
   {
-    LocationPlaceholders foundPlaceHolders{};
+    LocationPlaceholders_t foundPlaceHolders{};
 
     for (size_t i_token{0}; i_token < where.size(); i_token++)
     {
@@ -220,9 +220,9 @@ namespace NiceGraphic::Internal::Format
     return foundPlaceHolders;
   }
 
-  PlacholdersSeq TurnIntoSortedSeq(LocationPlaceholders &toTurn)
+  PlacholdersSeq_t TurnIntoSortedSeq(LocationPlaceholders_t &toTurn)
   {
-    PlacholdersSeq unsortedSeq{};
+    PlacholdersSeq_t unsortedSeq{};
 
     for(const auto &[index, positions] : toTurn)
     {
