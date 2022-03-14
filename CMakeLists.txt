@@ -8,8 +8,22 @@ add_compile_options(-Wall)
 
 add_subdirectory(execute)
 
-set(SOURCE_FILES Format.cpp PlaceholderPosition.cpp  FormatPrinter.cpp)
-set(HEADER_FILES Format.h PlaceholderPosition.h FormatPrinter.h Token.h)
-set(TEMPLATE_FILES Format.tpp FormatPrinter.tpp)
+set(SOURCE_FILES
+        Format.cpp
+        PlaceholderPosition.cpp
+        FormatPrinter.cpp
+        Invalid_format.cpp
+)
+set(HEADER_FILES
+        Format.h
+        PlaceholderPosition.h
+        FormatPrinter.h
+        Token.h
+        Invalid_format.h
+)
+set(TEMPLATE_FILES
+        Format.tpp
+        FormatPrinter.tpp
+)
 
 add_library(NiceFormatPrint ${SOURCE_FILES} ${HEADER_FILES} ${TEMPLATE_FILES})
