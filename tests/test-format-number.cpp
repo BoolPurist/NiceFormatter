@@ -62,8 +62,6 @@ TEST_CASE( "Test case with 0  placeholders and DummyRecord", "[Valid]" )
   };
 
   const std::string givenFormat{"Record => {0} ..."};
-  std::ostringstream bufferHelper{};
-  bufferHelper << givenRecord;
   const std::string expected{
     "Record => (-10): , Maker wacker with the price: 2.5$ ..."
   };
