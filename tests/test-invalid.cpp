@@ -36,6 +36,26 @@ TEST_CASE("Wrong number of arguments for placeholders.")
   }
 }
 
+TEST_CASE("Wrong number of arguments for numbered and empty placeholders.")
+{
+  const std::string givenFormat{"({},{}) <==> ({0},{1})"};
+
+  SECTION("Providing too few args. 1 instead of 2.")
+  {
+    REQUIRE_THROWS_AS(
+      NiceGraphic::Format(givenFormat, 1),
+      NiceGraphic::InvalidFormat
+    );
+  }
+  SECTION("Providing too many args. 4 instead of 2.")
+  {
+    REQUIRE_THROWS_AS(
+      NiceGraphic::Format(givenFormat, 1, 2, 3, 4),
+      NiceGraphic::InvalidFormat
+    );
+  }
+}
+
 TEST_CASE("Invalid format with missing }.")
 {
   const std::string wrongFormat{"aaa{234"};
