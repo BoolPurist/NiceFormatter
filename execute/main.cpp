@@ -12,9 +12,7 @@ void AssertThrowInvalidExpForWrongFormat();
 
 int main()
 {
-  AssertShortSimple();
-  AssertThrowInvalidExpForWrongNbrOfPlaceHolders();
-  AssertThrowInvalidExpForWrongFormat();
+  std::cout << NiceGraphic::Format("Hello {} from {}", "max", "earth") << std::endl;
 }
 
 void PrintLine(const std::string& message)

@@ -16,11 +16,11 @@ namespace NiceGraphic::Internal::Format
     const std::string &symbolSequence
   );
 
-  Token ProcessNextPlaceHolder(
-    size_t &currentPosition,
-    const std::string &symbolSequence
-  );
+  Token ProcessNextPlaceHolder(size_t& currentPosition,
+    const std::string& symbolSequence,
+    size_t& countFoundUnNumbered);
 
+  void ThrowIfLeadingZero(size_t inspectSpot, const std::string &symbolSequence);
   void ThrowNoDigitInPlaceHolder(char noDigitSymbol);
   void ThrowIfWrongArgNumber(int argNumber, int placeHolderNumber);
   void ThrowMissingPlaceholderId(size_t missingNumber);
@@ -39,6 +39,7 @@ namespace NiceGraphic::Internal::Format
       return tokens;
     }
 
+    size_t countFoundNumbered{0};
     bool expectsLiteral{true};
 
     for(size_t i_symbol{0}; i_symbol < formatSize; i_symbol++)
@@ -58,7 +59,11 @@ namespace NiceGraphic::Internal::Format
       else
       {
         // expects placeholder symbol
-        newToken = ProcessNextPlaceHolder(i_symbol, formatToTokenize);
+        newToken = ProcessNextPlaceHolder(
+          i_symbol,
+          formatToTokenize,
+          countFoundNumbered
+        );
 
         assert(newToken.value.empty());
         assert(newToken.IsPlaceHolder());
@@ -106,38 +111,19 @@ namespace NiceGraphic::Internal::Format
     return literalToken;
   }
 
-  void ThrowIfLeadingZero(size_t inspectSpot, const std::string &symbolSequence)
-  {
-    size_t size{symbolSequence.size()};
-    size_t nextInspectSpot = inspectSpot + 1;
 
-    if (
-        // Leading zero can only be with at least one element ahead before the end
-        nextInspectSpot < size &&
-        // Found a zero which could be leading zero.
-        symbolSequence[inspectSpot] == '0' &&
-        // A closing } closes the placeholder anyway.
-        // So no leading zero possible.
-        symbolSequence[nextInspectSpot] != kClosePlaceHolderSymbol
-      )
-    {
-      throw InvalidFormat(
-        "Placeholder id/number should not have a leading zero"
-        );
-    }
 
-  }
-
-  Token ProcessNextPlaceHolder(
-      size_t &currentPosition,
-      const std::string &symbolSequence
-    )
+  Token ProcessNextPlaceHolder(size_t& currentPosition,
+    const std::string& symbolSequence,
+    size_t& countFoundUnNumbered)
   {
     Token placeHolderToken{};
     std::string placeHolderNumber{};
+    bool found1Digit{};
 
     ThrowIfLeadingZero(currentPosition, symbolSequence);
 
+    // To extract numbered placeholders some parsing for is needed.
     for (
       size_t i_symbol_placeholder{currentPosition};
       i_symbol_placeholder < symbolSequence.size();
@@ -149,13 +135,24 @@ namespace NiceGraphic::Internal::Format
       if (currentSymbol == kClosePlaceHolderSymbol)
       {
         currentPosition = i_symbol_placeholder;
-        // This loop ensures that only digits where appended to placeHolderNumber
-        // This should not fail because of invalid_argument exception.
-        placeHolderToken.placeHolderIndex = std::stoi(placeHolderNumber);
+
+        if (found1Digit)
+        {
+          // This loop ensures that only digits where appended to placeHolderNumber
+          // This should not fail because of invalid_argument exception.
+          placeHolderToken.placeHolderIndex = std::stoi(placeHolderNumber);
+        }
+        else
+        {
+          placeHolderToken.placeHolderIndex = countFoundUnNumbered;
+          countFoundUnNumbered++;
+        }
+
         return placeHolderToken;
       }
       else if (std::isdigit(currentSymbol))
       {
+        found1Digit = true;
         placeHolderNumber += currentSymbol;
       }
       else
@@ -195,8 +192,6 @@ namespace NiceGraphic::Internal::Format
     }
     return  sortedPlaceSeq;
   }
-
-
 
   LocationPlaceholders_t LocatePlaceHolders(const std::vector<Token> &where)
   {
@@ -242,6 +237,28 @@ namespace NiceGraphic::Internal::Format
       );
 
     return unsortedSeq;
+  }
+
+  void ThrowIfLeadingZero(size_t inspectSpot, const std::string &symbolSequence)
+  {
+    size_t size{symbolSequence.size()};
+    size_t nextInspectSpot = inspectSpot + 1;
+
+    if (
+      // Leading zero can only be with at least one element ahead before the end
+      nextInspectSpot < size &&
+        // Found a zero which could be leading zero.
+        symbolSequence[inspectSpot] == '0' &&
+        // A closing } closes the placeholder anyway.
+        // So no leading zero possible.
+        symbolSequence[nextInspectSpot] != kClosePlaceHolderSymbol
+      )
+    {
+      throw InvalidFormat(
+        "Placeholder id/number should not have a leading zero"
+      );
+    }
+
   }
 
   void ThrowMissingPlaceholderId(size_t missingNumber)
