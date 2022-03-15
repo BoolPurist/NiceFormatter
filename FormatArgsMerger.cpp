@@ -2,12 +2,12 @@
 // Created by nicegraphic on 3/11/22.
 //
 
-#include "FormatPrinter.h"
+#include "FormatArgsMerger.h"
 
 namespace NiceGraphic
 {
 
-  FormatPrinter::FormatPrinter(
+  FormatArgsMerger::FormatArgsMerger(
     std::vector<Token> &&formatTemplate,
     std::vector<PlaceholderPosition> &&positionsToInsert
     )
@@ -15,7 +15,7 @@ namespace NiceGraphic
     , positionsToInsert{std::move(positionsToInsert)}
     {}
 
-  std::ostringstream FormatPrinter::GetMergeBetweenFormatAndVars()
+  std::ostringstream FormatArgsMerger::GetMergeBetweenFormatAndVars()
   {
     std::ostringstream merge{};
 

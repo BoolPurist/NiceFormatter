@@ -2,7 +2,7 @@
 #define NICE_FORMAT_TEMPLATE_LIBRARY_H
 
 #include "Format.h"
-#include "FormatPrinter.h"
+#include "FormatArgsMerger.h"
 
 namespace NiceGraphic
 {
@@ -27,7 +27,7 @@ namespace NiceGraphic
       numberOfFoundPlaceholders
     );
 
-    FormatPrinter printer{
+    FormatArgsMerger printer{
       std::move(tokens),
       std::move(position)
     };

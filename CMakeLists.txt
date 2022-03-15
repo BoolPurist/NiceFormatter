@@ -14,13 +14,13 @@ add_subdirectory(tests)
 set(SOURCE_FILES
         Format.cpp
         PlaceholderPosition.cpp
-        FormatPrinter.cpp
+        FormatArgsMerger.cpp
         InvalidFormat.cpp
 )
 set(HEADER_FILES
         Format.h
         PlaceholderPosition.h
-        FormatPrinter.h
+        FormatArgsMerger.h
         Token.h
         InvalidFormat.h
 )

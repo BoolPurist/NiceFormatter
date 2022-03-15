@@ -5,18 +5,18 @@
 #ifndef NICEFORMATPRINT_FORMATPRINTER_TPP_
 #define NICEFORMATPRINT_FORMATPRINTER_TPP_
 
-#include "FormatPrinter.h"
+#include "FormatArgsMerger.h"
 
 namespace NiceGraphic
 {
   template<typename HasOutStreamOperator>
-  void FormatPrinter::InsertFormatVars(const HasOutStreamOperator& lastToPrint)
+  void FormatArgsMerger::InsertFormatVars(const HasOutStreamOperator& lastToPrint)
   {
     InsertArgIntoFormat(lastToPrint);
   }
 
   template<typename HasOutStreamOperator,typename... ArgsHaveOutStreamOperator>
-  void FormatPrinter::InsertFormatVars(
+  void FormatArgsMerger::InsertFormatVars(
     const HasOutStreamOperator &toWrite,
     const ArgsHaveOutStreamOperator&... restToWrite
   )
@@ -26,7 +26,7 @@ namespace NiceGraphic
   }
 
   template <typename HasOutStreamOperator>
-  void FormatPrinter::InsertArgIntoFormat(const HasOutStreamOperator &toWrite)
+  void FormatArgsMerger::InsertArgIntoFormat(const HasOutStreamOperator &toWrite)
   {
     const auto& placesToFill = positionsToInsert.at(printIndex);
     placeholderBuffer << toWrite;

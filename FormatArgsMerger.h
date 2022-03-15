@@ -12,11 +12,11 @@
 
 namespace NiceGraphic
 {
-  class FormatPrinter
+  class FormatArgsMerger
   {
 
    public:
-    FormatPrinter(
+    FormatArgsMerger(
         std::vector<Token> &&formatTemplate,
         std::vector<PlaceholderPosition> &&positionsToInsert
       );

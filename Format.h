@@ -10,7 +10,7 @@
 
 #include "Token.h"
 #include "PlaceholderPosition.h"
-#include "FormatPrinter.h"
+#include "FormatArgsMerger.h"
 #include "InvalidFormat.h"
 
 namespace NiceGraphic
