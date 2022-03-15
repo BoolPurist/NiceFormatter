@@ -21,3 +21,30 @@ TEST_CASE("Empty placeholder only ")
   REQUIRE(actual == expected);
 }
 
+TEST_CASE("Empty placeholder combined with numbered ones. ")
+{
+  const std::string givenFormat{
+    "User is {0} To: {}.{}@{}.com, Subject: {3}"
+  };
+  const std::string givenUserName{"Max"};
+  const std::string givenLastName{"Ulf"};
+  const std::string givenCompany{"company"};
+  const std::string givenSubject{"work"};
+
+  const std::string expected{
+    "User is Max To: Max.Ulf@company.com, Subject: work"
+  };
+
+  const std::string actual{
+    NiceGraphic::Format(
+      givenFormat,
+      givenUserName,
+      givenLastName,
+      givenCompany,
+      givenSubject
+      )
+  };
+
+  REQUIRE(actual == expected);
+}
+
