@@ -45,5 +45,5 @@ namespace NiceGraphic::Internal::Format
 
 }
 
-#include "FormatPrinter.tpp"
+#include "FormatArgsMerger.tpp"
 #endif //NICEFORMATPRINT_FORMATPRINTER_H_

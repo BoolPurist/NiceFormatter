@@ -16,6 +16,7 @@ set(SOURCE_FILES
         PlaceholderPosition.cpp
         FormatArgsMerger.cpp
         InvalidFormat.cpp
+        Tokenization.cpp
 )
 set(HEADER_FILES
         Format.h
@@ -23,10 +24,11 @@ set(HEADER_FILES
         FormatArgsMerger.h
         Token.h
         InvalidFormat.h
+        Tokenization.h
 )
 set(TEMPLATE_FILES
         Format.tpp
-        FormatPrinter.tpp
+        FormatArgsMerger.tpp
 )
 
 add_library(NiceFormatPrint ${SOURCE_FILES} ${HEADER_FILES} ${TEMPLATE_FILES})

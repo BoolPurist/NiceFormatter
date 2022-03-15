@@ -12,6 +12,9 @@
 #include "PlaceholderPosition.h"
 #include "FormatArgsMerger.h"
 #include "InvalidFormat.h"
+#include "FormatArgsMerger.h"
+#include "Tokenization.h"
+
 
 namespace NiceGraphic
 {

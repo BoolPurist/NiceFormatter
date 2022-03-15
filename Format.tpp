@@ -2,7 +2,6 @@
 #define NICE_FORMAT_TEMPLATE_LIBRARY_H
 
 #include "Format.h"
-#include "FormatArgsMerger.h"
 
 namespace NiceGraphic
 {
