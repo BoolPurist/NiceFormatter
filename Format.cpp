@@ -10,6 +10,7 @@ namespace NiceGraphic::Internal::Format
 
   LocationPlaceholders_t LocatePlaceHolders(const std::vector<Token> &where);
   PlacholdersSeq_t TurnIntoSortedSeq(LocationPlaceholders_t &toTurn);
+
   Token ProcessNextLiteral(
     size_t &currentPosition,
     const std::string &symbolSequence
@@ -19,6 +20,11 @@ namespace NiceGraphic::Internal::Format
     size_t &currentPosition,
     const std::string &symbolSequence
   );
+
+  void ThrowNoDigitInPlaceHolder(char noDigitSymbol);
+  void ThrowIfWrongArgNumber(int argNumber, int placeHolderNumber);
+  void ThrowMissingPlaceholderId(size_t missingNumber);
+  void ThrowMissingCloseSymbol();
 
   static const char kOpenPlaceHolderSymbol = '{';
 	static const char kClosePlaceHolderSymbol = '}';
@@ -43,7 +49,7 @@ namespace NiceGraphic::Internal::Format
       {
         newToken = ProcessNextLiteral(i_symbol, formatToTokenize);
 
-        assert(!newToken.isPlaceHolder);
+        assert(!newToken.IsPlaceHolder());
         assert(newToken.placeHolderIndex < 0);
 
         tokens.push_back(newToken);
@@ -55,7 +61,7 @@ namespace NiceGraphic::Internal::Format
         newToken = ProcessNextPlaceHolder(i_symbol, formatToTokenize);
 
         assert(newToken.value.empty());
-        assert(newToken.isPlaceHolder);
+        assert(newToken.IsPlaceHolder());
         assert(newToken.placeHolderIndex > -1);
 
         tokens.push_back(newToken);
@@ -128,8 +134,6 @@ namespace NiceGraphic::Internal::Format
     )
   {
     Token placeHolderToken{};
-    placeHolderToken.isPlaceHolder = true;
-
     std::string placeHolderNumber{};
 
     ThrowIfLeadingZero(currentPosition, symbolSequence);
@@ -156,18 +160,13 @@ namespace NiceGraphic::Internal::Format
       }
       else
       {
-        std::string errorMessage{
-          "("s + currentSymbol + ") is not digit for a placeholder argument"s
-        };
-        throw InvalidFormat(errorMessage);
+        ThrowNoDigitInPlaceHolder(currentSymbol);
       }
     }
 
     // Should not reach end of format with no found closing '}'
-
-    throw InvalidFormat(
-      "No closing "s + kClosePlaceHolderSymbol + " found."s
-      );
+    ThrowMissingCloseSymbol();
+    return placeHolderToken;
   }
 
 
@@ -191,30 +190,13 @@ namespace NiceGraphic::Internal::Format
     {
       if (sortedPlaceSeq.at(i_supposedNumber).index != i_supposedNumber)
       {
-
-        const std::string errorMessage{
-          "Placeholder id ("s + std::to_string(i_supposedNumber) +
-          ") is missing."s
-        };
-
-        throw InvalidFormat(errorMessage);
+        ThrowMissingPlaceholderId(i_supposedNumber);
       }
     }
-
     return  sortedPlaceSeq;
   }
 
-  void ThrowIfWrongArgNumber(int argNumber, int placeHolderNumber)
-  {
-    if (argNumber != placeHolderNumber)
-    {
-      std::ostringstream errorMsg;
-      errorMsg << "Number of given variadic arguments are not correct.\n"
-               << "Number of variadic arguments: (" << argNumber << ").\n"
-               << "Format expects (" << placeHolderNumber << ") arguments. \n";
-      throw InvalidFormat(errorMsg.str());
-    }
-  }
+
 
   LocationPlaceholders_t LocatePlaceHolders(const std::vector<Token> &where)
   {
@@ -223,7 +205,7 @@ namespace NiceGraphic::Internal::Format
     for (size_t i_token{0}; i_token < where.size(); i_token++)
     {
       const auto &currentToken = where.at(i_token);
-      if (currentToken.isPlaceHolder)
+      if (currentToken.IsPlaceHolder())
       {
         auto it = foundPlaceHolders.find(currentToken.placeHolderIndex);
         if (it != foundPlaceHolders.end())
@@ -238,11 +220,8 @@ namespace NiceGraphic::Internal::Format
               )
             );
         }
-
       }
-
     }
-
     return foundPlaceHolders;
   }
 
@@ -263,6 +242,44 @@ namespace NiceGraphic::Internal::Format
       );
 
     return unsortedSeq;
+  }
+
+  void ThrowMissingPlaceholderId(size_t missingNumber)
+  {
+    const std::string errorMessage{
+      "Placeholder id ("s + std::to_string(missingNumber) +
+        ") is missing."s
+    };
+
+    throw InvalidFormat(errorMessage);
+  }
+
+  void ThrowNoDigitInPlaceHolder(char noDigitSymbol)
+  {
+    std::string errorMessage{
+      "("s + noDigitSymbol + ") is not digit for a placeholder argument"s
+    };
+    throw InvalidFormat(errorMessage);
+  }
+
+  void ThrowIfWrongArgNumber(int argNumber, int placeHolderNumber)
+  {
+    if (argNumber != placeHolderNumber)
+    {
+      std::ostringstream errorMsg;
+      errorMsg << "Number of given variadic arguments are not correct.\n"
+               << "Number of variadic arguments: (" << argNumber << ").\n"
+               << "Format expects (" << placeHolderNumber << ") arguments. \n";
+      throw InvalidFormat(errorMsg.str());
+    }
+  }
+
+  void ThrowMissingCloseSymbol()
+  {
+    // Should not reach end of format with no found closing '}'
+    throw InvalidFormat(
+      "No closing "s + kClosePlaceHolderSymbol + " found."s
+    );
   }
 
 }

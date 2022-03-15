@@ -11,9 +11,13 @@ namespace NiceGraphic
 {
   struct Token
   {
-    bool isPlaceHolder{};
     std::string value{};
     int placeHolderIndex{-1};
+
+    bool IsPlaceHolder() const
+    {
+      return placeHolderIndex > -1;
+    }
   };
 }
 
