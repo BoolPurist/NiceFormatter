@@ -55,3 +55,27 @@ TEST_CASE("Invalid format with missing 1 between 0 and 2 for placeholders.")
     NiceGraphic::InvalidFormat
   );
 }
+
+TEST_CASE("Invalid placeholder number with leading zeros.")
+{
+
+  const int correctPlaceHolderValue{1};
+  SECTION("Testing with only zeros in placeholder number.")
+  {
+    std::string wrongFormat{">>{00000}<<"};
+    REQUIRE_THROWS_AS(
+      NiceGraphic::Format(wrongFormat, correctPlaceHolderValue),
+      NiceGraphic::InvalidFormat
+    );
+  }
+  SECTION("Testing with leading zeros in placeholder number.")
+  {
+    std::string wrongFormat{">>{00022}<<"};
+    REQUIRE_THROWS_AS(
+      NiceGraphic::Format(wrongFormat, correctPlaceHolderValue),
+      NiceGraphic::InvalidFormat
+    );
+  }
+
+}
+

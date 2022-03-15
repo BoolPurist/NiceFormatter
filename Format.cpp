@@ -100,6 +100,28 @@ namespace NiceGraphic::Internal::Format
     return literalToken;
   }
 
+  void ThrowIfLeadingZero(size_t inspectSpot, const std::string &symbolSequence)
+  {
+    size_t size{symbolSequence.size()};
+    size_t nextInspectSpot = inspectSpot + 1;
+
+    if (
+        // Leading zero can only be with at least one element ahead before the end
+        nextInspectSpot < size &&
+        // Found a zero which could be leading zero.
+        symbolSequence[inspectSpot] == '0' &&
+        // A closing } closes the placeholder anyway.
+        // So no leading zero possible.
+        symbolSequence[nextInspectSpot] != kClosePlaceHolderSymbol
+      )
+    {
+      throw InvalidFormat(
+        "Placeholder id/number should not have a leading zero"
+        );
+    }
+
+  }
+
   Token ProcessNextPlaceHolder(
       size_t &currentPosition,
       const std::string &symbolSequence
@@ -109,6 +131,8 @@ namespace NiceGraphic::Internal::Format
     placeHolderToken.isPlaceHolder = true;
 
     std::string placeHolderNumber{};
+
+    ThrowIfLeadingZero(currentPosition, symbolSequence);
 
     for (
       size_t i_symbol_placeholder{currentPosition};
@@ -145,6 +169,8 @@ namespace NiceGraphic::Internal::Format
       "No closing "s + kClosePlaceHolderSymbol + " found."s
       );
   }
+
+
 
   std::vector<PlaceholderPosition> GetPlaceHolderLocation(
       const std::vector<Token> &toInspect
