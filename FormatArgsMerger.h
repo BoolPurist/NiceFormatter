@@ -10,7 +10,7 @@
 #include "Token.h"
 #include "PlaceholderPosition.h"
 
-namespace NiceGraphic
+namespace NiceGraphic::Internal::Format
 {
   class FormatArgsMerger
   {

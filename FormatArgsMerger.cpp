@@ -4,7 +4,7 @@
 
 #include "FormatArgsMerger.h"
 
-namespace NiceGraphic
+namespace NiceGraphic::Internal::Format
 {
 
   FormatArgsMerger::FormatArgsMerger(

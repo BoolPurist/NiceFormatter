@@ -31,13 +31,13 @@ namespace NiceGraphic
 
 namespace NiceGraphic::Internal::Format
 {
-std::vector<Token> FormatTokenizer(const std::string& formatToTokenize);
+  std::vector<Token> FormatTokenizer(const std::string& formatToTokenize);
 
-std::vector<PlaceholderPosition> GetPlaceHolderLocation(
-  const std::vector<Token> &toInspect
-);
+  std::vector<PlaceholderPosition> GetPlaceHolderLocation(
+    const std::vector<Token> &toInspect
+  );
 
-void ThrowIfWrongArgNumber(int argNumber, int placeHolderNumber);
+  void ThrowIfWrongArgNumber(int argNumber, int placeHolderNumber);
 }
 
 #include "Format.tpp"

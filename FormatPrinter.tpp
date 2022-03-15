@@ -7,7 +7,7 @@
 
 #include "FormatArgsMerger.h"
 
-namespace NiceGraphic
+namespace NiceGraphic::Internal::Format
 {
   template<typename HasOutStreamOperator>
   void FormatArgsMerger::InsertFormatVars(const HasOutStreamOperator& lastToPrint)
