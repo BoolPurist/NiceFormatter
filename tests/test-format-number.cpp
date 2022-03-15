@@ -53,7 +53,7 @@ struct DummyRecord
   }
 };
 
-TEST_CASE( "Test case with 0  placeholders and DummyRecord", "[Valid]" )
+TEST_CASE( "Test case with 0 placeholders and DummyRecord", "[Valid]" )
 {
   const DummyRecord givenRecord{
     -10,
@@ -71,6 +71,4 @@ TEST_CASE( "Test case with 0  placeholders and DummyRecord", "[Valid]" )
     givenRecord
   );
   REQUIRE(expected == output);
-  // Record => (-10) , Maker wacker with the price: 2.5$
-  // Record => (-10): , Maker wacker with the price: 2.5$
 }
