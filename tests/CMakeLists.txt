@@ -5,6 +5,7 @@ add_executable(unit_tests
         test-format-number.cpp
         test-invalid.cpp
         test-empty-placeholders.cpp
+        test-spacing-left-right.cpp
 )
 
 target_link_libraries(unit_tests PRIVATE
