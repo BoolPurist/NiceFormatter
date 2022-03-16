@@ -4,6 +4,7 @@ set(SOURCE_FILES
         FormatArgsMerger.cpp
         InvalidFormat.cpp
         Tokenization.cpp
+        Token.cpp
         )
 set(HEADER_FILES
         Format.h

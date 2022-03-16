@@ -13,11 +13,11 @@ namespace NiceGraphic
   {
     std::string value{};
     int placeHolderIndex{-1};
+    int padding{};
 
-    bool IsPlaceHolder() const
-    {
-      return placeHolderIndex > -1;
-    }
+    bool IsPlaceHolder() const;
+
+    bool IsRightNotLeftAligned() const;
   };
 }
 
