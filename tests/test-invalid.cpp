@@ -4,8 +4,8 @@
 
 #include <catch2/catch.hpp>
 
-#include "../Format.h"
-#include "../InvalidFormat.h"
+#include "../lib/Format.h"
+#include "../lib/InvalidFormat.h"
 
 TEST_CASE("Invalid format with one non numbered placeholder")
 {

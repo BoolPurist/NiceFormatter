@@ -3,7 +3,7 @@
 //
 
 #include <catch2/catch.hpp>
-#include "../Format.h"
+#include "../lib/Format.h"
 #include <iostream>
 
 TEST_CASE( "Test case with 0, 1 placeholders", "[Valid]" )

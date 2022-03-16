@@ -1,7 +1,7 @@
 //
 // Created by nicegraphic on 3/11/22.
 //
-#include "../Format.h"
+#include "../lib/Format.h"
 #include <iostream>
 #include <string>
 
@@ -12,7 +12,7 @@ void AssertThrowInvalidExpForWrongFormat();
 
 int main()
 {
-  
+
   std::cout << NiceGraphic::Format("Hello {} from {}", "max", "earth") << std::endl;
 }
 
