@@ -15,4 +15,8 @@ namespace NiceGraphic
   {
     return padding > 0;
   }
+  bool Token::HasPadding() const
+  {
+    return padding != 0;
+  }
 }

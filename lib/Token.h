@@ -15,8 +15,10 @@ namespace NiceGraphic
     int placeHolderIndex{-1};
     int padding{};
 
-    bool IsPlaceHolder() const;
+    std::string paddingSymbol{" "};
 
+    bool IsPlaceHolder() const;
+    bool HasPadding() const;
     bool IsRightNotLeftAligned() const;
   };
 }
