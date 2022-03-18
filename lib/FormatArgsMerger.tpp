@@ -31,6 +31,7 @@ namespace NiceGraphic::Internal::Format
       const HasOutStreamOperator& toWrite
     )
   {
+    // It will have one element for certain.
     const auto& currentToken = formatTemplate.at(
       placesToFill.positions.at(0)
     );
@@ -42,14 +43,17 @@ namespace NiceGraphic::Internal::Format
       auto absolutePadding = std::abs(currentToken.padding);
       auto toPadAmount = static_cast<size_t>(std::max(0, absolutePadding - valueLength));
 
-      if (currentToken.IsRightNotLeftAligned())
+      if(toPadAmount != 0)
       {
-        ClearBuffer();
-        placeholderBuffer << std::string(toPadAmount, ' ') << toWrite;
-      }
-      else
-      {
-        placeholderBuffer << std::string(toPadAmount, ' ');
+        if (currentToken.IsRightNotLeftAligned())
+        {
+          ClearBuffer();
+          placeholderBuffer << std::string(toPadAmount, ' ') << toWrite;
+        }
+        else
+        {
+          placeholderBuffer << std::string(toPadAmount, ' ');
+        }
       }
     }
 

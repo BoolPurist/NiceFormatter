@@ -26,7 +26,7 @@ namespace NiceGraphic::Internal::Format
     size_t& countFoundUnNumbered
   );
 
-  void ThrowIfLeadingZero(size_t inspectSpot, const std::string &symbolSequence);
+  void ThrowIfLeadingZero(const std::string& numberSeq);
   void ThrowNoDigitInPlaceHolder(char noDigitSymbol);
   void ThrowMissingCloseSymbol();
 

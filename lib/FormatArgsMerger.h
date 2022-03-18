@@ -33,8 +33,8 @@ namespace NiceGraphic::Internal::Format
     std::ostringstream GetMergeBetweenFormatAndVars();
 
    private:
-    std::vector<Token> formatTemplate;
-    std::vector<PlaceholderPosition> positionsToInsert;
+    std::vector<Token> formatTemplate{};
+    std::vector<PlaceholderPosition> positionsToInsert{};
     std::ostringstream placeholderBuffer{};
     int printIndex{};
 

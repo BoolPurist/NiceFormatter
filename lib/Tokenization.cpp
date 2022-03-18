@@ -116,12 +116,12 @@ namespace NiceGraphic::Internal::Format
       Token& placeHolderToken
     )
   {
-    ThrowIfLeadingZero(currentPosition, symbolSequence);
+
 
     std::string placeHolderNumber{};
     size_t i_symbol_placeholder{currentPosition};
 
-    // To extract numbered placeholders some parsing for is needed.
+    // Extract number from the currentPosition on.
     for (
         ;
         i_symbol_placeholder < symbolSequence.size();
@@ -142,6 +142,8 @@ namespace NiceGraphic::Internal::Format
     }
 
     currentPosition = i_symbol_placeholder;
+
+    ThrowIfLeadingZero(placeHolderNumber);
 
     return !placeHolderNumber.empty() ?
       std::optional<size_t>{std::stoi(placeHolderNumber)} :
@@ -238,19 +240,12 @@ namespace NiceGraphic::Internal::Format
     return placeHolderToken;
   }
 
-  void ThrowIfLeadingZero(size_t inspectSpot, const std::string &symbolSequence)
+  void ThrowIfLeadingZero(const std::string& numberSeq)
   {
-    size_t size{symbolSequence.size()};
-    size_t nextInspectSpot = inspectSpot + 1;
+    size_t size{numberSeq.size()};
 
     if (
-      // Leading zero can only be with at least one element ahead before the end
-      nextInspectSpot < size &&
-        // Found a zero which could be leading zero.
-        symbolSequence[inspectSpot] == '0' &&
-        // A closing } closes the placeholder anyway.
-        // So no leading zero possible.
-        symbolSequence[nextInspectSpot] != kClosePlaceHolderSymbol
+        numberSeq.size() >= 2 && numberSeq.at(0) == '0'
       )
     {
       throw InvalidFormat(
