@@ -7,8 +7,17 @@ list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_LIST_DIR}/cmake)
 
 add_compile_options(-Wall)
 
-add_subdirectory(execute)
-add_subdirectory(tests)
+option(PROJECTS_TESTS "Builds the unit tests" OFF)
+option(PROJECTS_CONSOLE "Builds main for playing around" OFF)
+
+if(PROJECTS_TESTS)
+    add_subdirectory(tests)
+endif()
+if(PROJECTS_CONSOLE)
+    add_subdirectory(execute)
+endif()
+
+
 add_subdirectory(lib)
 
 
