@@ -4,7 +4,7 @@
 
 #include <catch2/catch.hpp>
 #include <string>
-#include "../lib/Format.h"
+#include <Format.h>
 
 TEST_CASE("Empty placeholder only ")
 {

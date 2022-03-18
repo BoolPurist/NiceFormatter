@@ -20,3 +20,4 @@ set(TEMPLATE_FILES
         )
 
 add_library(NiceFormatPrint ${SOURCE_FILES} ${HEADER_FILES} ${TEMPLATE_FILES})
+target_include_directories(NiceFormatPrint INTERFACE ${CMAKE_CURRENT_LIST_DIR})
