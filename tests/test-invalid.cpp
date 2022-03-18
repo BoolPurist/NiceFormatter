@@ -99,3 +99,32 @@ TEST_CASE("Invalid placeholder number with leading zeros.")
 
 }
 
+TEST_CASE("Invalid format with letter after number.")
+{
+  const std::string wrongFormat{"aaa{0}a{1a}aa"};
+
+  REQUIRE_THROWS_AS(
+    NiceGraphic::Format(wrongFormat, 1, 2),
+    NiceGraphic::InvalidFormat
+  );
+}
+
+TEST_CASE("Testing invalid format for padding")
+{
+  using namespace std::literals;
+  auto invalidFormat = GENERATE(
+      ">>{0,,}<<"s,
+      ">>{0,2,}<<"s,
+      ">>{0,01}<<"s,
+      ">>{0,a}<<"s,
+      ">>{0,2a}<<"s,
+      ">>{0,a2}<<"s
+    );
+
+  INFO("Given invalid format "s + invalidFormat);
+  REQUIRE_THROWS_AS(
+      NiceGraphic::Format(invalidFormat, 1),
+      NiceGraphic::InvalidFormat
+    );
+}
+

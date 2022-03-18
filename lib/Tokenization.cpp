@@ -235,15 +235,23 @@ namespace NiceGraphic::Internal::Format
     else
     {
       ProcessPaddingAmount(symbolSequence, currentPosition, placeHolderToken);
+      if (CheckForEndOfPlaceholder(symbolSequence, currentPosition))
+      {
+        return placeHolderToken;
+      }
+      else
+      {
+        ThrowMissingCloseSymbol();
+      }
     }
+
+
 
     return placeHolderToken;
   }
 
   void ThrowIfLeadingZero(const std::string& numberSeq)
   {
-    size_t size{numberSeq.size()};
-
     if (
         numberSeq.size() >= 2 && numberSeq.at(0) == '0'
       )
