@@ -19,6 +19,33 @@ void TestPaddingCityPop(
   REQUIRE(expected == actual);
 }
 
+TEST_CASE("Testing complex format with padding")
+{
+  // This test is based on the example on
+  // https://docs.microsoft.com/en-us/dotnet/api/system.string.format?view=net-6.0
+  // Under the section "Control spacing"
+  const std::string expected{
+    R"(  Year      Population
+
+  2013         1025632
+  2014         1105967
+  2015         1148203
+)"};
+
+  auto years = std::array<int, 3>{2013, 2014, 2015};
+  auto population = std::array<int, 3>{1025632, 1105967, 1148203};
+
+  auto output = std::ostringstream{};
+  output << NiceGraphic::Format("{0,6} {1,15}\n\n", "Year", "Population");
+  for (size_t i{0}; i < years.size(); i++)
+  {
+    output << NiceGraphic::Format("{0,6} {1,15}\n", years[i], population[i]);
+  }
+
+  const std::string actual = output.str();
+  REQUIRE(expected == actual);
+}
+
 TEST_CASE("Padding for a placeholder")
 {
   const std::string givenCity{"New York"};
