@@ -7,6 +7,7 @@
 
 #include <string>
 #include <vector>
+#include <optional>
 #include "Token.h"
 #include "InvalidFormat.h"
 #include <cassert>

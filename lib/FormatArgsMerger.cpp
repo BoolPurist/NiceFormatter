@@ -27,4 +27,10 @@ namespace NiceGraphic::Internal::Format
     return merge;
   }
 
+  void FormatArgsMerger::ClearBuffer()
+  {
+    placeholderBuffer.str("");
+    placeholderBuffer.clear();
+  }
+
 }

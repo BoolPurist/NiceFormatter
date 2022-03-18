@@ -94,57 +94,147 @@ namespace NiceGraphic::Internal::Format
     return literalToken;
   }
 
-  Token ProcessNextPlaceHolder(size_t& currentPosition,
+  bool CheckForEndOfPlaceholder(
+      const std::string& symbolSequence,
+      size_t& currentPosition
+    )
+  {
+    if (
+      currentPosition >= symbolSequence.size()
+      )
+    {
+      // Should not reach end of format with no found closing '}'
+      ThrowMissingCloseSymbol();
+    }
+
+    return symbolSequence.at(currentPosition) == kClosePlaceHolderSymbol;
+  }
+
+  std::optional<size_t> ProcessNumber(
+      const std::string& symbolSequence,
+      size_t& currentPosition,
+      Token& placeHolderToken
+    )
+  {
+    ThrowIfLeadingZero(currentPosition, symbolSequence);
+
+    std::string placeHolderNumber{};
+    size_t i_symbol_placeholder{currentPosition};
+
+    // To extract numbered placeholders some parsing for is needed.
+    for (
+        ;
+        i_symbol_placeholder < symbolSequence.size();
+        i_symbol_placeholder++
+      )
+    {
+      const char currentSymbol = symbolSequence.at(i_symbol_placeholder);
+
+      if (std::isdigit(currentSymbol))
+      {
+        placeHolderNumber += currentSymbol;
+      }
+      else
+      {
+        break;
+      }
+
+    }
+
+    currentPosition = i_symbol_placeholder;
+
+    return !placeHolderNumber.empty() ?
+      std::optional<size_t>{std::stoi(placeHolderNumber)} :
+      std::nullopt;
+
+  }
+
+  void ProcessPlaceHolderNumber(
+      const std::string& symbolSequence,
+      size_t& currentPosition,
+      Token& placeHolderToken,
+      size_t& countFoundUnNumbered
+    )
+  {
+    auto possibleNumber = ProcessNumber(
+        symbolSequence,
+        currentPosition,
+        placeHolderToken
+      );
+
+    if (!possibleNumber.has_value())
+    {
+      placeHolderToken.placeHolderIndex = countFoundUnNumbered;
+      countFoundUnNumbered++;
+    }
+    else
+    {
+      placeHolderToken.placeHolderIndex = possibleNumber.value();
+    }
+
+  }
+
+  void ProcessPaddingAmount(
+    const std::string& symbolSequence,
+    size_t& currentPosition,
+    Token& placeHolderToken
+    )
+  {
+    int paddingAmount{};
+    int paddingSign{1};
+
+    if (symbolSequence.at(currentPosition) == '-')
+    {
+      paddingSign *= -1;
+      currentPosition++;
+    }
+
+    auto possibleNumber = ProcessNumber(
+        symbolSequence,
+        currentPosition,
+        placeHolderToken
+      );
+
+    if (!possibleNumber.has_value())
+    {
+      ThrowNoDigitInPlaceHolder(symbolSequence.at(currentPosition));
+    }
+
+    paddingAmount = possibleNumber.value();
+    paddingAmount *= paddingSign;
+
+    placeHolderToken.padding = paddingAmount;
+  }
+
+  Token ProcessNextPlaceHolder(
+    size_t& currentPosition,
     const std::string& symbolSequence,
     size_t& countFoundUnNumbered
   )
   {
     Token placeHolderToken{};
-    std::string placeHolderNumber{};
-    bool found1Digit{};
 
-    ThrowIfLeadingZero(currentPosition, symbolSequence);
+    ProcessPlaceHolderNumber(
+        symbolSequence,
+        currentPosition,
+        placeHolderToken,
+        countFoundUnNumbered
+      );
 
-    // To extract numbered placeholders some parsing for is needed.
-    for (
-      size_t i_symbol_placeholder{currentPosition};
-      i_symbol_placeholder < symbolSequence.size();
-      i_symbol_placeholder++
-      )
+    if (CheckForEndOfPlaceholder(symbolSequence, currentPosition))
     {
-      auto currentSymbol = symbolSequence.at(i_symbol_placeholder);
-
-      if (currentSymbol == kClosePlaceHolderSymbol)
-      {
-        currentPosition = i_symbol_placeholder;
-
-        if (found1Digit)
-        {
-          // This loop ensures that only digits where appended to placeHolderNumber
-          // This should not fail because of invalid_argument exception.
-          placeHolderToken.placeHolderIndex = std::stoi(placeHolderNumber);
-        }
-        else
-        {
-          placeHolderToken.placeHolderIndex = countFoundUnNumbered;
-          countFoundUnNumbered++;
-        }
-
-        return placeHolderToken;
-      }
-      else if (std::isdigit(currentSymbol))
-      {
-        found1Digit = true;
-        placeHolderNumber += currentSymbol;
-      }
-      else
-      {
-        ThrowNoDigitInPlaceHolder(currentSymbol);
-      }
+      return placeHolderToken;
     }
 
-    // Should not reach end of format with no found closing '}'
-    ThrowMissingCloseSymbol();
+    if (symbolSequence.at(currentPosition++) != ',')
+    {
+      ThrowMissingCloseSymbol();
+    }
+    else
+    {
+      ProcessPaddingAmount(symbolSequence, currentPosition, placeHolderToken);
+    }
+
     return placeHolderToken;
   }
 

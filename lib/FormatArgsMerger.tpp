@@ -26,19 +26,50 @@ namespace NiceGraphic::Internal::Format
   }
 
   template <typename HasOutStreamOperator>
+  std::string FormatArgsMerger::CreateInsertValue(
+      const PlaceholderPosition& placesToFill,
+      const HasOutStreamOperator& toWrite
+    )
+  {
+    const auto& currentToken = formatTemplate.at(
+      placesToFill.positions.at(0)
+    );
+
+    placeholderBuffer << toWrite;
+    if (currentToken.HasPadding())
+    {
+      auto valueLength = static_cast<int>(placeholderBuffer.str().size());
+      auto absolutePadding = std::abs(currentToken.padding);
+      auto toPadAmount = static_cast<size_t>(std::max(0, absolutePadding - valueLength));
+
+      if (currentToken.IsRightNotLeftAligned())
+      {
+        ClearBuffer();
+        placeholderBuffer << std::string(toPadAmount, ' ') << toWrite;
+      }
+      else
+      {
+        placeholderBuffer << std::string(toPadAmount, ' ');
+      }
+    }
+
+    std::string valueToInsert{placeholderBuffer.str()};
+    ClearBuffer();
+
+    return valueToInsert;
+  }
+
+  template <typename HasOutStreamOperator>
   void FormatArgsMerger::InsertArgIntoFormat(const HasOutStreamOperator &toWrite)
   {
     const auto& placesToFill = positionsToInsert.at(printIndex);
-    placeholderBuffer << toWrite;
-    const auto& valueToInsert = placeholderBuffer.str();
+
+    const auto& valueToInsert = CreateInsertValue(placesToFill, toWrite);
 
     for (const auto& i_fill : placesToFill.positions)
     {
       formatTemplate.at(i_fill).value = valueToInsert;
     }
-
-    placeholderBuffer.str("");
-    placeholderBuffer.clear();
 
     printIndex++;
   }

@@ -38,8 +38,14 @@ namespace NiceGraphic::Internal::Format
     std::ostringstream placeholderBuffer{};
     int printIndex{};
 
+    void ClearBuffer();
     template <typename HasOutStreamOperator>
     void InsertArgIntoFormat(const HasOutStreamOperator &toWrite);
+    template <typename HasOutStreamOperator>
+    std::string CreateInsertValue(
+      const PlaceholderPosition& placesToFill,
+      const HasOutStreamOperator& toWrite
+    );
 
   };
 
