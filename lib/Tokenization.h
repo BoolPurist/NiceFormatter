@@ -15,21 +15,6 @@
 namespace NiceGraphic::Internal::Format
 {
   std::vector<Token> FormatTokenizer(const std::string& formatToTokenize);
-
-  Token ProcessNextLiteral(
-    size_t &currentPosition,
-    const std::string &symbolSequence
-  );
-
-  Token ProcessNextPlaceHolder(size_t& currentPosition,
-    const std::string& symbolSequence,
-    size_t& countFoundUnNumbered
-  );
-
-  void ThrowIfLeadingZero(const std::string& numberSeq);
-  void ThrowNoDigitInPlaceHolder(char noDigitSymbol);
-  void ThrowMissingCloseSymbol();
-
 }
 
 #endif //NICEFORMATPRINT_9A1F93C5F6E34954AEFAF4199A75A973_TOKENIZATION_H_

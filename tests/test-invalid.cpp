@@ -109,7 +109,7 @@ TEST_CASE("Invalid format with letter after number.")
   );
 }
 
-TEST_CASE("Testing invalid format for padding")
+TEST_CASE("Testing invalid format for paddingAmount")
 {
   using namespace std::literals;
   auto invalidFormat = GENERATE(

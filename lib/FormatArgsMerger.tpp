@@ -40,7 +40,7 @@ namespace NiceGraphic::Internal::Format
     if (currentToken.HasPadding())
     {
       auto valueLength = static_cast<int>(placeholderBuffer.str().size());
-      auto absolutePadding = std::abs(currentToken.padding);
+      auto absolutePadding = std::abs(currentToken.paddingAmount);
       auto toPadAmount = static_cast<size_t>(std::max(0, absolutePadding - valueLength));
 
       if(toPadAmount != 0)

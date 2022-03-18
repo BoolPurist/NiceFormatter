@@ -13,10 +13,10 @@ namespace NiceGraphic
 
   bool Token::IsRightNotLeftAligned() const
   {
-    return padding > 0;
+    return paddingAmount > 0;
   }
   bool Token::HasPadding() const
   {
-    return padding != 0;
+    return paddingAmount != 0;
   }
 }

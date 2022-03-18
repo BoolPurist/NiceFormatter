@@ -13,7 +13,7 @@ namespace NiceGraphic
   {
     std::string value{};
     int placeHolderIndex{-1};
-    int padding{};
+    int paddingAmount{};
 
     std::string paddingSymbol{" "};
 

@@ -19,7 +19,7 @@ void TestPaddingCityPop(
   REQUIRE(expected == actual);
 }
 
-TEST_CASE("Testing complex format with padding")
+TEST_CASE("Testing complex format with paddingAmount")
 {
   // This test is based on the example on
   // https://docs.microsoft.com/en-us/dotnet/api/system.string.format?view=net-6.0
@@ -51,7 +51,7 @@ TEST_CASE("Padding for a placeholder")
   const std::string givenCity{"New York"};
   const int givenPopulation{100000};
 
-  SECTION("Left padding with unnumbered placeholder")
+  SECTION("Left paddingAmount with unnumbered placeholder")
   {
     const std::string givenFormat{"{,10} {,10}"};
     const std::string expected{"  New York     100000"};
@@ -62,7 +62,7 @@ TEST_CASE("Padding for a placeholder")
         expected
       );
   }
-  SECTION("Right padding with unnumbered placeholder")
+  SECTION("Right paddingAmount with unnumbered placeholder")
   {
     const std::string givenFormat{"{,-10} {,-10}"};
     const std::string expected{"New York   100000    "};
@@ -73,7 +73,7 @@ TEST_CASE("Padding for a placeholder")
       expected
     );
   }
-  SECTION("Left padding with numbered placeholder")
+  SECTION("Left paddingAmount with numbered placeholder")
   {
     const std::string givenFormat{"{0,10} {1,10}"};
     const std::string expected{"  New York     100000"};
@@ -84,7 +84,7 @@ TEST_CASE("Padding for a placeholder")
       expected
     );
   }
-  SECTION("Right padding with numbered placeholder")
+  SECTION("Right paddingAmount with numbered placeholder")
   {
     const std::string givenFormat{"{0,-10} {1,-10}"};
     const std::string expected{"New York   100000    "};

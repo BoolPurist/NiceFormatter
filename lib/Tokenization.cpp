@@ -12,6 +12,46 @@ namespace NiceGraphic::Internal::Format
   static const char kOpenPlaceHolderSymbol = '{';
   static const char kClosePlaceHolderSymbol = '}';
 
+
+
+  Token ProcessNextLiteral(
+    size_t &currentPosition,
+    const std::string &symbolSequence
+  );
+
+  Token ProcessNextPlaceHolder(size_t& currentPosition,
+    const std::string& symbolSequence,
+    size_t& countFoundUnNumbered
+  );
+
+  bool CheckForEndOfPlaceholder(
+    const std::string& symbolSequence,
+    size_t& currentPosition
+  );
+
+  std::optional<size_t> ProcessNumber(
+    const std::string& symbolSequence,
+    size_t& currentPosition,
+    Token& placeHolderToken
+  );
+
+  void ProcessPlaceHolderNumber(
+    const std::string& symbolSequence,
+    size_t& currentPosition,
+    Token& placeHolderToken,
+    size_t& countFoundUnNumbered
+  );
+
+  void ProcessPaddingAmount(
+    const std::string& symbolSequence,
+    size_t& currentPosition,
+    Token& placeHolderToken
+  );
+
+  void ThrowIfLeadingZero(const std::string& numberSeq);
+  void ThrowNoDigitInPlaceHolder(char noDigitSymbol);
+  void ThrowMissingCloseSymbol();
+
   std::vector<Token> FormatTokenizer(const std::string& formatToTokenize)
   {
     std::vector<Token> tokens{};
@@ -94,6 +134,46 @@ namespace NiceGraphic::Internal::Format
     return literalToken;
   }
 
+  Token ProcessNextPlaceHolder(
+    size_t& currentPosition,
+    const std::string& symbolSequence,
+    size_t& countFoundUnNumbered
+  )
+  {
+    Token placeHolderToken{};
+
+    ProcessPlaceHolderNumber(
+      symbolSequence,
+      currentPosition,
+      placeHolderToken,
+      countFoundUnNumbered
+    );
+
+    if (CheckForEndOfPlaceholder(symbolSequence, currentPosition))
+    {
+      return placeHolderToken;
+    }
+
+    if (symbolSequence.at(currentPosition++) != ',')
+    {
+      ThrowMissingCloseSymbol();
+    }
+    else
+    {
+      ProcessPaddingAmount(symbolSequence, currentPosition, placeHolderToken);
+      if (CheckForEndOfPlaceholder(symbolSequence, currentPosition))
+      {
+        return placeHolderToken;
+      }
+      else
+      {
+        ThrowMissingCloseSymbol();
+      }
+    }
+
+    return placeHolderToken;
+  }
+
   bool CheckForEndOfPlaceholder(
       const std::string& symbolSequence,
       size_t& currentPosition
@@ -116,8 +196,6 @@ namespace NiceGraphic::Internal::Format
       Token& placeHolderToken
     )
   {
-
-
     std::string placeHolderNumber{};
     size_t i_symbol_placeholder{currentPosition};
 
@@ -142,7 +220,6 @@ namespace NiceGraphic::Internal::Format
     }
 
     currentPosition = i_symbol_placeholder;
-
     ThrowIfLeadingZero(placeHolderNumber);
 
     return !placeHolderNumber.empty() ?
@@ -205,49 +282,7 @@ namespace NiceGraphic::Internal::Format
     paddingAmount = possibleNumber.value();
     paddingAmount *= paddingSign;
 
-    placeHolderToken.padding = paddingAmount;
-  }
-
-  Token ProcessNextPlaceHolder(
-    size_t& currentPosition,
-    const std::string& symbolSequence,
-    size_t& countFoundUnNumbered
-  )
-  {
-    Token placeHolderToken{};
-
-    ProcessPlaceHolderNumber(
-        symbolSequence,
-        currentPosition,
-        placeHolderToken,
-        countFoundUnNumbered
-      );
-
-    if (CheckForEndOfPlaceholder(symbolSequence, currentPosition))
-    {
-      return placeHolderToken;
-    }
-
-    if (symbolSequence.at(currentPosition++) != ',')
-    {
-      ThrowMissingCloseSymbol();
-    }
-    else
-    {
-      ProcessPaddingAmount(symbolSequence, currentPosition, placeHolderToken);
-      if (CheckForEndOfPlaceholder(symbolSequence, currentPosition))
-      {
-        return placeHolderToken;
-      }
-      else
-      {
-        ThrowMissingCloseSymbol();
-      }
-    }
-
-
-
-    return placeHolderToken;
+    placeHolderToken.paddingAmount = paddingAmount;
   }
 
   void ThrowIfLeadingZero(const std::string& numberSeq)
