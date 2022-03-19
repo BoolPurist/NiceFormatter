@@ -7,8 +7,12 @@
 
 #include <sstream>
 #include <vector>
+#include <iostream>
+#include <iomanip>
+
 #include "Token.h"
 #include "PlaceholderPosition.h"
+
 
 namespace NiceGraphic::Internal::Format
 {
@@ -52,4 +56,5 @@ namespace NiceGraphic::Internal::Format
 }
 
 #include "FormatArgsMerger.tpp"
+
 #endif //NICEFORMATPRINT_FORMATPRINTER_H_

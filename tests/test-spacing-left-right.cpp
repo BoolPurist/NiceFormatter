@@ -1,3 +1,4 @@
+
 //
 // Created by nicegraphic on 3/17/22.
 //
@@ -94,6 +95,26 @@ TEST_CASE("Padding for a placeholder")
       givenPopulation,
       expected
     );
+  }
+}
+
+TEST_CASE("Check if padding does not remain")
+{
+  const std::string name{"Alf"};
+  const int age{20};
+  std::ostringstream output{};
+
+  SECTION("Check negative")
+  {
+    const std::string expected{"       Alf|20"};
+    output << NiceGraphic::Format("{,10}|{}", name, age);
+    REQUIRE(expected == output.str());
+  }
+  SECTION("Check positive")
+  {
+    const std::string expected{"Alf       |20"};
+    output << NiceGraphic::Format("{,-10}|{}", name, age);
+    REQUIRE(expected == output.str());
   }
 }
 

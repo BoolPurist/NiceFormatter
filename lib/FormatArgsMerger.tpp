@@ -35,29 +35,31 @@ namespace NiceGraphic::Internal::Format
     const auto& currentToken = formatTemplate.at(
       placesToFill.positions.at(0)
     );
+    auto oldFormatFlags = placeholderBuffer.flags();
 
-    placeholderBuffer << toWrite;
     if (currentToken.HasPadding())
     {
       auto valueLength = static_cast<int>(placeholderBuffer.str().size());
       auto absolutePadding = std::abs(currentToken.paddingAmount);
       auto toPadAmount = static_cast<size_t>(std::max(0, absolutePadding - valueLength));
 
+
       if(toPadAmount != 0)
       {
         if (currentToken.IsRightNotLeftAligned())
         {
-          ClearBuffer();
-          placeholderBuffer << std::string(toPadAmount, ' ') << toWrite;
+          placeholderBuffer << std::right << std::setw(toPadAmount);
         }
         else
         {
-          placeholderBuffer << std::string(toPadAmount, ' ');
+          placeholderBuffer << std::left << std::setw(toPadAmount);
         }
       }
     }
 
+    placeholderBuffer << toWrite;
     std::string valueToInsert{placeholderBuffer.str()};
+    placeholderBuffer.flags(oldFormatFlags);
     ClearBuffer();
 
     return valueToInsert;
