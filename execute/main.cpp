@@ -4,17 +4,60 @@
 #include <Format.h>
 #include <iostream>
 #include <string>
+#include <iomanip>      // std::setw
 
 void PrintLine(const std::string& message);
 void AssertShortSimple();
 void AssertThrowInvalidExpForWrongNbrOfPlaceHolders();
 void AssertThrowInvalidExpForWrongFormat();
+void Example1();
+void Example2();
+void Example3();
+void Example4();
+void Example5();
 
 int main()
 {
-  AssertShortSimple();
-  AssertThrowInvalidExpForWrongNbrOfPlaceHolders();
-  AssertThrowInvalidExpForWrongFormat();
+  Example4();
+}
+
+void Example5()
+{
+  std::cout
+    << NiceGraphic::Format("{,-12}{,-8}{,-4}\n{,-12}{,-8}{,-4}", "Name", "Price", "ID", "Computer", "400$", "45")
+    << std::endl;
+}
+
+
+void Example4()
+{
+  std::cout
+  << NiceGraphic::Format("{,12}{,8}{,4}\n{,12}{,8}{,4}", "Name", "Price", "ID", "Computer", "400$", "45")
+  << std::endl;
+}
+
+void Example3()
+{
+  std::cout << NiceGraphic::Format("An {1} from the {}", "apple", "tree") << std::endl;
+}
+
+void Example2()
+{
+  const std::vector<int> scores{4500, 2000, 1000};
+  std::cout << NiceGraphic::Format(
+    "1. {}\n2. {}\n3. {}",
+    scores.at(0),
+    scores.at(1),
+    scores.at(2)
+    ) << std::endl;
+
+}
+
+void Example1()
+{
+  const std::pair<int, int> coords{2, 2};
+  std::cout << NiceGraphic::Format("({0},{1})", coords.first, coords.second)
+            << std::endl;
 }
 
 void PrintLine(const std::string& message)

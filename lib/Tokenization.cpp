@@ -259,7 +259,7 @@ namespace NiceGraphic::Internal::Format
     Token& placeHolderToken
     )
   {
-    int paddingAmount{};
+
     int paddingSign{1};
 
     if (symbolSequence.at(currentPosition) == '-')
@@ -279,7 +279,7 @@ namespace NiceGraphic::Internal::Format
       ThrowNoDigitInPlaceHolder(symbolSequence.at(currentPosition));
     }
 
-    paddingAmount = possibleNumber.value();
+    auto paddingAmount{possibleNumber.value()};
     paddingAmount *= paddingSign;
 
     placeHolderToken.paddingAmount = paddingAmount;
