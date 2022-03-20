@@ -1,3 +1,5 @@
+
+
 set(SOURCE_FILES
         Format.cpp
         PlaceholderPosition.cpp
@@ -5,7 +7,7 @@ set(SOURCE_FILES
         InvalidFormat.cpp
         Tokenization.cpp
         Token.cpp
-        )
+)
 set(HEADER_FILES
         Format.h
         PlaceholderPosition.h
@@ -13,11 +15,11 @@ set(HEADER_FILES
         Token.h
         InvalidFormat.h
         Tokenization.h
-        )
+)
 set(TEMPLATE_FILES
         Format.tpp
         FormatArgsMerger.tpp
-        )
+)
 
-add_library(NiceFormatPrint ${SOURCE_FILES} ${HEADER_FILES} ${TEMPLATE_FILES})
-target_include_directories(NiceFormatPrint INTERFACE ${CMAKE_CURRENT_LIST_DIR})
+add_library(NiceGraphic_FormatOutput ${SOURCE_FILES} ${HEADER_FILES} ${TEMPLATE_FILES})
+target_include_directories(NiceGraphic_FormatOutput INTERFACE ${CMAKE_CURRENT_LIST_DIR})

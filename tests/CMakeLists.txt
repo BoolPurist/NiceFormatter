@@ -8,7 +8,9 @@ add_executable(unit_tests
         test-spacing-left-right.cpp
 )
 
-target_link_libraries(unit_tests PRIVATE
+target_link_libraries(
+        unit_tests
+        PRIVATE
         Catch2::Catch2
-        NiceFormatPrint
+        NiceGraphic_FormatOutput
 )
