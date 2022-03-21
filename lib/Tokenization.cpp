@@ -154,23 +154,14 @@ namespace NiceGraphic::Internal::Format
       return placeHolderToken;
     }
 
-    if (symbolSequence.at(currentPosition++) != ',')
+    ProcessPaddingAmount(symbolSequence, currentPosition, placeHolderToken);
+    if (CheckForEndOfPlaceholder(symbolSequence, currentPosition))
     {
-      ThrowMissingCloseSymbol();
-    }
-    else
-    {
-      ProcessPaddingAmount(symbolSequence, currentPosition, placeHolderToken);
-      if (CheckForEndOfPlaceholder(symbolSequence, currentPosition))
-      {
-        return placeHolderToken;
-      }
-      else
-      {
-        ThrowMissingCloseSymbol();
-      }
+      return placeHolderToken;
     }
 
+    // Should not reach at the end of this function
+    ThrowMissingCloseSymbol();
     return placeHolderToken;
   }
 
@@ -259,6 +250,10 @@ namespace NiceGraphic::Internal::Format
     Token& placeHolderToken
     )
   {
+    if (symbolSequence.at(currentPosition++) != ',')
+    {
+      ThrowMissingCloseSymbol();
+    }
 
     int paddingSign{1};
 
