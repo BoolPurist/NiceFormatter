@@ -24,6 +24,11 @@ namespace NiceGraphic
   /// It denotes a position for a variadic argument with a {Positive number}
   /// @param variadicArgs Variables to be inserted in the format.
   /// @example Format("({0},{1})", 2, 4) => (2,4)
+  /// @throw InvalidFormat Thrown if format is ill formed or not right number of args are given.
+  /// A Format is ill formed.
+  /// if placeholder number is negative.
+  /// if placeholder numbers have a gap.
+  /// if placeholder number format is wrong like missing , before padding number or a letter for the number.
   template<typename... ArgsHaveOutStreamOperator>
   std::string Format(
     const std::string &format,
