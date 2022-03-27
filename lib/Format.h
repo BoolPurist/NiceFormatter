@@ -18,12 +18,12 @@
 
 namespace NiceGraphic
 {
-  /// Summary: Allows to insert variadic arguments into format string
-  /// Param format: Is the template to be merged with variadic arguments.
-  /// Params variadicArgs: Variables to be inserted in format.
-  /// Format denotes a position for a variadic argument with {<Positive number>}
-  /// Example: Format("({0},{1})", 2, 4) => (2,4)
-  /// Precondition variadic arguments have a output stream operator operator.
+  /// Allows to insert variadic arguments into a format string.
+  /// Precondition: Variadic arguments have to got an output stream operator.
+  /// @param format Is the template to be merged with variadic arguments.
+  /// It denotes a position for a variadic argument with a {Positive number}
+  /// @param variadicArgs Variables to be inserted in the format.
+  /// @example Format("({0},{1})", 2, 4) => (2,4)
   template<typename... ArgsHaveOutStreamOperator>
   std::string Format(
     const std::string &format,
