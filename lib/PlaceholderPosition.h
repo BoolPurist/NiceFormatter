@@ -6,6 +6,7 @@
 #define NICEFORMATPRINT_PLACEHOLDERPOSITION_H_
 
 #include <vector>
+#include <cstddef>
 
 struct PlaceholderPosition
 {
